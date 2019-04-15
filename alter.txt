@@ -1,0 +1,33 @@
+tbl_produto_acabado{
+	Feito o campo 'nome'
+}
+
+tbl_brinde{
+	adicionado o campo 'preco'
+}
+
+tbl_cartao_bandeira{
+	Apagados os campos que pediam o id dos cartões
+}
+
+tbl_pessoa_fisica{
+	Colocado o campo do cpf como unique
+}
+
+tbl_promocao{
+	excluido o campo de tipo de tbl_promocao
+	criado o campo 'foto_promocao'
+	campo descricao e foto_promocao colocado como text, assim não tem limites de caracteres 
+}
+
+tbl_nossas_loja{
+	adicionado os campos 'latitude' e 'longitude'
+}
+
+tbl_posts{
+	Adicionado o campo foto_post e curtidas_post, sendo o primeiro TEXT e o segundo INT
+}
+
+tbl_comentario{
+	adicionado o campo id_usuario (INT) para identificar quem fez o comentário
+}
