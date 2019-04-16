@@ -12,9 +12,9 @@ const server = restify.createServer({
 var knex = require('knex')({
     client: 'mysql',
     connection: {
-      host : '10.107.144.29',
-      user : 'remoto',
-      password : 'bcd127',
+      host : 'localhost',  //'10.107.144.29',
+      user :  'root', //'remoto',
+      password : '',  //'bcd127',
       database : 'db_oncreate'
     }
   });
@@ -24,7 +24,7 @@ server.use(restify.plugins.acceptParser(server.acceptable));
 server.use(restify.plugins.queryParser());
 server.use(restify.plugins.bodyParser());
 
-server.listen(8080, function () {
+server.listen(5001, function () {
   console.log('%s listening at %s', server.name, server.url);
 });
 
@@ -111,7 +111,7 @@ server.post('/cliente/cadastro', (req, res, next)=>{
         .then((dados) => {
             res.send({sucesso : true});
         }, function(){
-            res.send(new errs.BadRequestError('Falha no cadastro'));
+            res.send({sucesso : false});
         })
 });
 
