@@ -12,9 +12,9 @@ const server = restify.createServer({
 var knex = require('knex')({
     client: 'mysql',
     connection: {
-      host : 'localhost',  //'10.107.144.29',
-      user :  'root', //'remoto',
-      password : '',  //'bcd127',
+      host : '10.107.144.29', //'localhost',  
+      user :   'remoto', //'root',
+      password : 'bcd127',  //'bcd127',
       database : 'db_oncreate'
     }
   });
@@ -113,6 +113,19 @@ server.post('/cliente/cadastro', (req, res, next)=>{
         }, function(){
             res.send({sucesso : false});
         })
+});
+
+//MODIFICAR DADOS DO USUÁRIO
+server.put('/cliente/modificar/:id', (req, res, next) =>{
+    const {id} = req.params
+    knex('tbl_pessoa_fisica')
+    .update(req.body)
+    .where('id_pessoa_fisica', id)
+    .then((dados) => {
+        res.send({sucesso : true})
+    }, function(){
+        res.send(new errs.BadRequestError('Não foi possível editar os campos'));
+    })
 });
 
 //SELECT NAS PROMOÇÕES
