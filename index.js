@@ -33,14 +33,25 @@ server.listen(5001, function () {
 /////////////////////////////////////////
 
 //SELECT DE TODOS OS PRODUTOS ACABAdDOS
-server.get('/brindes', (req, res, next) => {
+// server.get('/brindes', (req, res, next) => {
+//     //NO WHERE É NECESSÁRIO USAR O '0' E '1' POIS É ASSIM QUE O KNEX TRABALHA
+//     knex('tbl_brinde')
+//         .crossJoin('tbl_foto_brinde')
+//         .where({'tbl_brinde.id_brinde' : '1.id_brinde'})
+//         .then((dados) => {
+//             res.send(dados);
+//         }, function(){
+//             res.send(new errs.BadRequestError('Error'))
+//         })
+// });
 
+server.get('/brindes', (req, res, next) => {
     //NO WHERE É NECESSÁRIO USAR O '0' E '1' POIS É ASSIM QUE O KNEX TRABALHA
-    knex('tbl_brinde')
+    knex('vw_produto_foto')
         .then((dados) => {
-            res.send(dados);
+            res.send(dados)
         }, function(){
-            res.send(new errs.BadRequestError('Infelizmente não conseguimos localizar os produtos'))
+            res.send(new errs.BadRequestError('Error'))
         })
 });
 
