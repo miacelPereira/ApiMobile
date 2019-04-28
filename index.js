@@ -12,9 +12,9 @@ const server = restify.createServer({
 var knex = require('knex')({
     client: 'mysql',
     connection: {
-      host : '10.107.144.29', //'localhost',  
-      user :   'remoto', //'root',
-      password : 'bcd127',  //'bcd127',
+      host : 'localhost', //'10.107.144.29',  
+      user :  'root', // 'remoto', 
+      password : '',  //'bcd127',
       database : 'db_oncreate'
     }
   });
@@ -54,6 +54,7 @@ server.get('/brindes', (req, res, next) => {
             res.send(new errs.BadRequestError('Error'))
         })
 });
+
 
 //SELECT EM APENAS UMA FOTO DE UM PRODUTO
 server.get('/foto/brinde/:id', (req, res, next) => {
@@ -106,8 +107,7 @@ server.get('/cliente/:id', (req, res, next)=>{
     const {id} = req.params;
 
     knex('tbl_pessoa_fisica')
-        .where({'tbl_pessoa_fisica.id_pessoa_fisica': id, 'tbl_cartao_pessoa_fisica.id_pessoa_fisica': id})
-        .crossJoin('tbl_cartao_pessoa_fisica')
+        .where('tbl_pessoa_fisica.id_pessoa_fisica', id)
         .then((dados)=>{
             res.send(dados);
         }, function(){
@@ -127,11 +127,11 @@ server.post('/cliente/cadastro', (req, res, next)=>{
 });
 
 //MODIFICAR DADOS DO USUÁRIO
-server.put('/cliente/modificar/:id', (req, res, next) =>{
-    const {id} = req.params
+server.put('/cliente/modificar', (req, res, next) =>{
+    const {id_pessoa_fisica} = req.body;
     knex('tbl_pessoa_fisica')
     .update(req.body)
-    .where('id_pessoa_fisica', id)
+    .where('id_pessoa_fisica', id_pessoa_fisica)
     .then((dados) => {
         res.send({sucesso : true})
     }, function(){
@@ -155,7 +155,7 @@ server.post('/promocao/cadastro', (req, res, next) => {
         .then((dados) => {
             res.send({sucesso : true});        
         }, function(){
-            res.send(new errs.BadRequestError('Falha no cadastro'));
+            res.send({sucesso : false}); 
         })
 });
 
@@ -174,9 +174,16 @@ server.post('/login', (req, res, next) => {
 
     knex('tbl_pessoa_fisica').where({'email': email, 'senha':senha}).then((dados) =>{
         if(dados[0] == null){
-            res.send(new errs.BadRequestError('Dados incorretos'));
+            res.send({
+                        "id_pessoa_fisica": 0,
+                        "cpf": null,
+                        "nome": null,
+                        "email": null,
+                        "telefone": null,
+                        "senha": null
+                    });
         }else{
-            res.send(dados);
+            res.send(dados[0]);
         }
     }, next)
 });
